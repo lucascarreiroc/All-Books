@@ -1,32 +1,51 @@
-# AllBooks
+# 📚 AllBooks
 
 Boas vindas à API do AllBooks!
 
-O AllBooks é uma loja virtual que vende livros da Casa do Código. 
-É um MVP que tá só começando e ainda tem muitas funcionalidades novas para serem desenvolvidas.
+O AllBooks é uma API mockada para uma loja virtual de livros, desenvolvida como
+projeto de estudo com foco em **autenticação JWT** e organização de uma API REST
+em Node.js. Ainda é um MVP, com espaço para novas funcionalidades.
 
-# JSONServer + JWT Auth
+> Projeto criado durante estudos de back-end, usando `json-server` como banco
+> mockado e `jsonwebtoken` para autenticação.
 
-Essa é ma API Rest mockada, utilizando json-server e JWT.
+## 🛠️ Tecnologias utilizadas
 
-## 🛠️ Instalação
+- Node.js
+- json-server
+- jsonwebtoken (JWT)
+- bcryptjs
+- body-parser
+
+## 🚀 Instalação
 
 ```bash
-$ npm install
-$ npm run start-auth
-```
-## 🛠️ Como se registrar?
-
-Você pode fazer isso efetuando uma requisição post para:
-
-```
-POST http://localhost:8000/public/registrar
+git clone https://github.com/lucascarreiroc/allbooks.git
+cd allbooks
+npm install
 ```
 
-Com os seguintes dados:
-
+Crie um arquivo `.env` na raiz do projeto (use o `.env.example` como base) com:
 
 ```
+JWT_SECRET=coloque_aqui_uma_string_longa_e_aleatoria
+```
+
+Depois, inicie a API:
+
+```bash
+npm run start-auth
+```
+
+## 📖 Como usar
+
+### Registrar um novo usuário
+
+```
+POST http://localhost:8000/public/cadastrar
+```
+
+```json
 {
     "nome": "vinicios neves",
     "email": "vinicios@alura.com.br",
@@ -37,39 +56,49 @@ Com os seguintes dados:
 }
 ```
 
-Repare que o e-mail é um campo único e usuários com e-mails duplicados não serão persistidos.
+> O e-mail é um campo único; cadastros com e-mails duplicados são recusados.
 
-## 🛠️ Como fazer login?
-
-Você pode fazer isso efetuando uma requisição post para:
+### Fazer login
 
 ```
 POST http://localhost:8000/public/login
 ```
 
-Com os seguintes dados:
-
-
-```
+```json
 {
   "email": "vinicios@alura.com.br",
-  "senha":"123456"
+  "senha": "123456"
 }
 ```
 
-Você vai receber um token no seguinte formato:
+Resposta:
 
-```
+```json
 {
    "access_token": "<ACCESS_TOKEN>",
-   "user": { ... dados do usuário ... }
+   "user": { "...": "dados do usuário" }
 }
 ```
 
-## Autenticar próximas requests?
+### Autenticar as próximas requisições
 
-E então, adicionar este mesmo token ao header das próximas requisições:
+Inclua o token no header das requisições protegidas:
 
 ```
 Authorization: Bearer <ACCESS_TOKEN>
 ```
+
+As rotas `/public`, `/livros`, `/autores` e `/categorias` são de leitura
+pública e não exigem autenticação.
+
+## 🗺️ Roadmap
+
+- [ ] Adicionar testes automatizados
+- [ ] Migrar dados mockados dos livros para o `database.json`
+- [ ] Adicionar paginação nas rotas de listagem
+
+## ⚠️ Aviso
+
+Este é um projeto de estudo. O "banco de dados" é um arquivo JSON local
+(`json-server`), o que é ótimo para prototipagem, mas não deve ser usado em
+produção.

@@ -1,13 +1,16 @@
-const { userDB } = require('../config/database')
+const bcrypt = require('bcryptjs');
+const { userDB } = require('../config/database');
 
-function usuarioExiste(email, senha, database = userDB) {
-    return database.usuarios.findIndex(user => user.email === email && Number(user.senha) === Number(senha)) !== -1
+async function usuarioExiste(email, senha, database = userDB) {
+  const user = database.usuarios.find(user => user.email === email);
+  if (!user) return false;
+
+  // Compara a senha informada com o hash salvo, em vez de comparar números
+  return bcrypt.compare(senha, user.senha);
 }
 
 function emailExiste(email, database = userDB) {
-    return database.usuarios.findIndex(user => user.email === email) !== -1
+  return database.usuarios.findIndex(user => user.email === email) !== -1;
 }
 
-
-
-module.exports = { usuarioExiste, emailExiste }
+module.exports = { usuarioExiste, emailExiste };
